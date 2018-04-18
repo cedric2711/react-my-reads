@@ -57,7 +57,7 @@ class SearchBooks extends Component{
             </div>
             <div className="search-books-results">
                 {(!books || books.error)? 
-                    <div>refine the search string </div>
+                    <div>The Books is not available </div>
                     :
                     <ol className="books-grid">
                     {

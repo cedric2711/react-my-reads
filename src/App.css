@@ -133,6 +133,10 @@ body, .app {
   color: #999;
 }
 
+span.book-author-name {
+  margin-right: 2px;
+}
+
 .book-top {
   position: relative;
   height: 200px;

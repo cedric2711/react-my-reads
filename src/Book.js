@@ -53,8 +53,12 @@ class Book extends Component {
                     <div className="book-title">{book.title}</div>
                     <div className="book-authors">
                         {book.authors?(
-                            book.authors.map((author)=>{
-                                return  <span key={author}>{author},</span>
+                            book.authors.map((author,index,totalAuth)=>{
+                                let surfix='';
+                                if(index<totalAuth.length-1){
+                                    surfix=',';
+                                }
+                                return  <span key={author} className="book-author-name">{author+surfix}</span>
                             })
                         ):''}
                     </div>
