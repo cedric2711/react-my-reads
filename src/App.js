@@ -8,37 +8,34 @@ import { Route } from 'react-router-dom'
 class BooksApp extends React.Component {
 
   state = {
-    books:[],
-    query: ""
+    books:[]
+  }
+  getBooksInShelf =() =>{
+    BooksAPI.getAll()
+    .then((books) =>{
+      this.setState(() => ({
+        books
+      }))
+    })
   }
   componentDidMount() {
-    BooksAPI.getAll()
-      .then((books) =>{
-        this.setState(() => ({
-          books
-        }))
-      })
+    this.getBooksInShelf()
   }
 
   updateBook=(bookId,bookShelf) =>{
     BooksAPI.update({id:bookId},bookShelf)
       .then((books) =>{
-        BooksAPI.getAll()
-          .then((books) =>{
-            this.setState(() => ({
-              books
-            }))
-          })
+        if(window.location.pathname==="/"){
+          this.getBooksInShelf()
+        }
       })
   }
 
   searchBook=(query)=>{
     BooksAPI.search(query)
       .then((books) =>{
-
         this.setState(() => ({
-          books,
-          query
+          books
         }))
       })
   }
@@ -51,10 +48,9 @@ class BooksApp extends React.Component {
             updateBook={this.updateBook}
           />)}
         />
-        <Route path='/searchBook' render={() =>(
+        <Route path='/search' render={(history) =>(
           <SearchBooks 
             books={this.state.books}
-            query={this.state.query}
             updateBook={this.updateBook}
             searchBook={this.searchBook}
           />)}

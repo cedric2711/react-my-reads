@@ -5,18 +5,22 @@ import Book from './Book'
 
 class SearchBooks extends Component{
     debugger;
+    state = {
+        query: ""
+    }
     static propTypes = {
          books: PropTypes.array.isRequired,
-         query: PropTypes.string.isRequired,
          updateBook: PropTypes.func.isRequired,
          searchBook: PropTypes.func.isRequired
     }
 
     updateQuery=(query) =>{
+        this.state.query=query;
         this.props.searchBook(query);
     }
     render() {
-        const { books, query, updateBook, searchBook } = this.props
+        const { query } = this.state
+        const { books, updateBook, searchBook } = this.props
         debugger;
         return (
             <div className="search-books">
@@ -45,7 +49,7 @@ class SearchBooks extends Component{
                 </div>
             </div>
             <div className="search-books-results">
-                {books.error? 
+                {(!books || books.error)? 
                     <div>refine the search string </div>
                     :
                     <ol className="books-grid">
