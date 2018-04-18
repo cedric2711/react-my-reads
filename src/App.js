@@ -1,5 +1,4 @@
 import React from 'react'
-import * as BooksAPI from './BooksAPI'
 import './App.css'
 import ListBooks from './ListBooks'
 import SearchBooks from './SearchBooks'
@@ -10,35 +9,7 @@ class BooksApp extends React.Component {
   state = {
     books:[]
   }
-  getBooksInShelf =() =>{
-    BooksAPI.getAll()
-    .then((books) =>{
-      this.setState(() => ({
-        books
-      }))
-    })
-  }
-  componentDidMount() {
-    this.getBooksInShelf()
-  }
-
-  updateBook=(bookId,bookShelf) =>{
-    BooksAPI.update({id:bookId},bookShelf)
-      .then((books) =>{
-        if(window.location.pathname==="/"){
-          this.getBooksInShelf()
-        }
-      })
-  }
-
-  searchBook=(query)=>{
-    BooksAPI.search(query)
-      .then((books) =>{
-        this.setState(() => ({
-          books
-        }))
-      })
-  }
+  
   render() {
     return (
       <div className="app">

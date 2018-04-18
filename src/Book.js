@@ -1,20 +1,45 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {Link} from 'react-router-dom'
+import * as BooksAPI from './BooksAPI'
 
 class Book extends Component {
+    static propTypes = {
+        book: PropTypes.object.isRequired,
+        getBooksInShelf: PropTypes.func
+    }
+    state={
+        book:this.props.book
+    }
     handleChange =(e) =>{
         e.preventDefault()
-        this.props.updateBook(this.props.book.id,e.currentTarget.value);
+        BooksAPI.update({id:this.props.book.id}, e.currentTarget.value)
+        .then((books) =>{
+          if(window.location.pathname==="/"){
+            this.props.getBooksInShelf()
+          }else{
+            this.updateBookState(this.props.book.id)
+          }
+        })
+    }
+    updateBookState = (bookId) =>{
+        BooksAPI.get(bookId)
+            .then((book) => {
+                this.setState(() => ({
+                    book
+                }))
+            })
     }
     render(){
-        const { book } = this.props
-
+        const { book } = this.state
+        if(book.imageLinks === undefined ){
+            book['imageLinks']={thumbnail:"./icons/no_image_found.png"};
+        } 
         return (
             <li key={book.id}>
                 <div className="book">
                     <div className="book-top">
-                        <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
+                        
+                        <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})`}}></div>
                         <div className="book-shelf-changer">
                         <select value={book.shelf===undefined? "none" : book.shelf} onChange={this.handleChange}>
                             <option value="none" disabled>Move to...</option>
@@ -29,7 +54,7 @@ class Book extends Component {
                     <div className="book-authors">
                         {book.authors?(
                             book.authors.map((author)=>{
-                                <span>{author},</span>
+                                return  <span key={author}>{author},</span>
                             })
                         ):''}
                     </div>

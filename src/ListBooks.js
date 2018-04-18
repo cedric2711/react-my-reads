@@ -1,16 +1,26 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
 import Book from './Book'
+import * as BooksAPI from './BooksAPI'
 
 class ListBooks extends Component{
-    debugger;
-    static propTypes = {
-         books: PropTypes.array.isRequired,
-         updateBook: PropTypes.func.isRequired
+
+    state = {
+        books:[]
+    }
+    getBooksInShelf =() =>{
+        BooksAPI.getAll()
+        .then((books) =>{
+            this.setState(() => ({
+            books
+            }))
+        })
+    }
+    componentDidMount() {
+        this.getBooksInShelf()
     }
     render() {
-        const { books, updateBook } = this.props
+        const { books } = this.state
         debugger;
         return (
             <div className="list-books">
@@ -26,9 +36,9 @@ class ListBooks extends Component{
                             {
                                 books.filter((book) => (book.shelf === 'currentlyReading')).map((book) => (
                                 <Book 
-                                    key= {book.id}
+                                    key={book.id}
                                     book={ book }
-                                    updateBook={ updateBook }
+                                    getBooksInShelf={ this.getBooksInShelf }
                                 />
                             ))}
                         </ol>
@@ -41,9 +51,9 @@ class ListBooks extends Component{
                             {
                                 books.filter((book) => (book.shelf === 'wantToRead')).map((book) => (
                                 <Book
-                                    key= {book.id}
+                                    key={book.id}
                                     book={book}
-                                    updateBook={ updateBook }
+                                    getBooksInShelf={ this.getBooksInShelf }
                                 />
                             ))}
                         </ol>
@@ -56,9 +66,9 @@ class ListBooks extends Component{
                             {
                                 books.filter((book) => (book.shelf === 'read')).map((book) => (
                                 <Book 
-                                    key= {book.id}
+                                    key={book.id}
                                     book={book}
-                                    updateBook={ updateBook }
+                                    getBooksInShelf={ this.getBooksInShelf }
                                 />
                             ))}
                         </ol>

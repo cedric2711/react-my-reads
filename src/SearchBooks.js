@@ -1,27 +1,34 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
 import Book from './Book'
+import * as BooksAPI from './BooksAPI'
 
 class SearchBooks extends Component{
     debugger;
     state = {
+        books: [],
         query: ""
     }
-    static propTypes = {
-         books: PropTypes.array.isRequired,
-         updateBook: PropTypes.func.isRequired,
-         searchBook: PropTypes.func.isRequired
+
+    searchBook=(query)=>{
+        BooksAPI.search(query)
+          .then((books) =>{
+            if(books === undefined){
+                books=[];
+            }
+            this.setState(() => ({
+              books,
+              query
+            }))
+          })
+    }
+    updateQuery=(query) =>{
+        this.searchBook(query);
     }
 
-    updateQuery=(query) =>{
-        this.state.query=query;
-        this.props.searchBook(query);
-    }
     render() {
-        const { query } = this.state
-        const { books, updateBook, searchBook } = this.props
-        debugger;
+        const { query, books } = this.state
+        
         return (
             <div className="search-books">
             <div className="search-books-bar">
@@ -56,9 +63,8 @@ class SearchBooks extends Component{
                     {
                         books.map((book) => (
                         <Book 
-                            key= {book.id}
+                            key={book.id}
                             book={book}
-                            updateBook={ updateBook }
                         />
                     ))}
                     </ol>
