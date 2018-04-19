@@ -171,8 +171,28 @@ span.book-author-name {
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   background: #eee;
 }
+
+.default-book-cover {
+  background-size: 128px 193px;
+  background-image: url('./icons/no_book_cover.jpg') !important;
+}
 .book-cover-title {
   padding: 20px 10px 0;
   text-align: center;
   font-size: 0.8em;
+}
+
+.book-preview {
+  background: #60ac5d;
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  align-self: center;
+  background-image: url('./icons/preview-book.png');
+  background-repeat: no-repeat;
+  background-size: 25px;
+  background-position: center;
 }

@@ -4,7 +4,7 @@ import Book from './Book'
 import * as BooksAPI from './BooksAPI'
 
 class SearchBooks extends Component{
-    debugger;
+    
     state = {
         books: [],
         query: ""
