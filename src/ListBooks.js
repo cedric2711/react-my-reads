@@ -1,26 +1,14 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom'
 import Book from './Book'
-import * as BooksAPI from './BooksAPI'
 
 class ListBooks extends Component{
 
-    state = {
-        books:[]
-    }
-    getBooksInShelf =() =>{
-        BooksAPI.getAll()
-        .then((books) =>{
-            this.setState(() => ({
-            books
-            }))
-        })
-    }
     componentDidMount() {
-        this.getBooksInShelf()
+        this.props.getBooksInShelf();
     }
     render() {
-        const { books } = this.state
+        const { books, getBooksInShelf } = this.props
         
         return (
             <div className="list-books">
@@ -38,7 +26,7 @@ class ListBooks extends Component{
                                 <Book 
                                     key={book.id}
                                     book={ book }
-                                    getBooksInShelf={ this.getBooksInShelf }
+                                    getBooksInShelf={ getBooksInShelf }
                                 />
                             ))}
                         </ol>

@@ -9,23 +9,22 @@ class SearchBooks extends Component{
         books: [],
         query: ""
     }
-
+    componentDidMount() {
+        this.props.getBooksInShelf();
+    }
     searchBook=(query)=>{
         BooksAPI.search(query)
           .then((books) =>{
             if(books === undefined){
                 books=[];
             }
-            books.forEach((book) =>{
-              if(book.imageLinks === undefined ){
-                  book['defaultImage']=true;
-                  book['imageLinks']={thumbnail:""};
-              }
-
-              if(book.shelf===undefined){
-                book['shelf']="none";
-              }
-            })
+            if(this.props.books){
+                books.forEach((book)=>{
+                    var bookFound=this.props.books.find(sbook => sbook.id===book.id);
+                    if(bookFound)
+                        book["shelf"]=bookFound.shelf;
+                });
+            }
             this.setState(() => ({
               books,
               query
@@ -48,14 +47,6 @@ class SearchBooks extends Component{
                     Close
                 </Link>
                 <div className="search-books-input-wrapper">
-                    {/*
-                    NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                    You can find these search terms here:
-                    https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-                    However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                    you don't find a specific author or title. Every search is limited by search terms.
-                    */}
                     <input
                         type="text"
                         placeholder="Search by title or author"
@@ -75,6 +66,7 @@ class SearchBooks extends Component{
                         <Book
                             key={book.id}
                             book={book}
+                            selectedBooks={this.props.books}
                         />
                     ))}
                     </ol>

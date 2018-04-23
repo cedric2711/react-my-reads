@@ -35,7 +35,10 @@ class Book extends Component {
     }
     render(){
         const { book } = this.state
-        
+        if(book.imageLinks === undefined ){
+            book['defaultImage']=true;
+            book['imageLinks']={thumbnail:""};
+        }
         return (
             <li key={book.id}>
                 <div className="book">
@@ -43,15 +46,15 @@ class Book extends Component {
 
                         <div className={"book-cover"+((book.defaultImage)?" default-book-cover":"")} style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})`}}></div>
                         <div className="book-shelf-changer">
-                        <select value={book.shelf} onChange={this.handleChange}>
-                            <option value="none" disabled>Move to...</option>
+                        <select value={book.shelf===undefined? "none" : book.shelf} onChange={this.handleChange}>
+                            <option value="move" disabled>Move to...</option>
                             <option value="currentlyReading">Currently Reading</option>
                             <option value="wantToRead">Want to Read</option>
                             <option value="read">Read</option>
                             <option value="none">None</option>
                         </select>
                         </div>
-                        <a className="book-preview" target="_blank" href={book.previewLink}></a>
+                        <a className="book-preview" target="_blank" href={book.previewLink} title="Preview"></a>
                     </div>
                     <div className="book-title">{book.title}</div>
                     <div className="book-authors">
