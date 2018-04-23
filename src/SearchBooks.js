@@ -4,7 +4,7 @@ import Book from './Book'
 import * as BooksAPI from './BooksAPI'
 
 class SearchBooks extends Component{
-    
+
     state = {
         books: [],
         query: ""
@@ -16,6 +16,16 @@ class SearchBooks extends Component{
             if(books === undefined){
                 books=[];
             }
+            books.forEach((book) =>{
+              if(book.imageLinks === undefined ){
+                  book['defaultImage']=true;
+                  book['imageLinks']={thumbnail:""};
+              }
+
+              if(book.shelf===undefined){
+                book['shelf']="none";
+              }
+            })
             this.setState(() => ({
               books,
               query
@@ -28,7 +38,7 @@ class SearchBooks extends Component{
 
     render() {
         const { query, books } = this.state
-        
+
         return (
             <div className="search-books">
             <div className="search-books-bar">
@@ -46,8 +56,8 @@ class SearchBooks extends Component{
                     However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                     you don't find a specific author or title. Every search is limited by search terms.
                     */}
-                    <input 
-                        type="text" 
+                    <input
+                        type="text"
                         placeholder="Search by title or author"
                         value={query}
                         onChange={(e)=> this.updateQuery(e.currentTarget.value)}
@@ -56,20 +66,20 @@ class SearchBooks extends Component{
                 </div>
             </div>
             <div className="search-books-results">
-                {(!books || books.error)? 
+                {(!books || books.error)?
                     <div>The Books is not available </div>
                     :
                     <ol className="books-grid">
                     {
                         books.map((book) => (
-                        <Book 
+                        <Book
                             key={book.id}
                             book={book}
                         />
                     ))}
                     </ol>
                 }
-                
+
             </div>
           </div>
         )
